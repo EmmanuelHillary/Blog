@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %} {{ post.title }} | {{ block.super }} {% endblock title %}
+{% block pre-content %}
+   {% include 'blog/message.html' %}
+{% endblock pre-content %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="col-10 offset-1">{{ post.title }}</h1>
+    <small class="col-10 offset-1">Post created by: {{ post.author }}</small>
+    {% if request.user == post.author %}
+        <div class="section-1 col offset-10">
+            <a href="{% url 'post:edit' post.pk %}">
+                <button type="button" class="btn btn-primary">Edit</button>
+            </a>
+            <a href="{% url 'post:delete' post.pk %}">
+                <button type="button" id="delete-post" class="btn btn-danger">Delete</button>
+            </a>
+        </div>
+    {% endif %}
+    <hr class="col-10 offset-1">
+
+    {% if video %}
+    {% for p in photos %}
+    <div class="">
+        <video width="400" controls class="col-6 offset-3">
+            <source src="{{ p.image.url }}" type="video/mp4">
+        </video>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% if image_many %}
+    <div id="carouselExampleIndicators" class="carousel slide col-6 offset-3" data-ride="carousel">
+        <ol class="carousel-indicators">
+            {% for p in photos %}
+            <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}"
+                class="{% if forloop.counter0 == 0 %} active {% endif %}"></li>
+            {% endfor %}
+        </ol>
+        <div class="carousel-inner">
+            {% for p in photos %}
+            <div class=" carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
+                <img src="{{ p.image.url }}" class="d-block w-100" alt="">
+            </div>
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    {% endif %}
+    {% if image_one %}
+        {% for p in photos %}
+            <div class="col-6 offset-3">
+                <img src="{{ p.image.url }}" class="d-block w-100" alt="">
+            </div>
+        {% endfor %}
+    {% endif %}
+    <p class="col-10 offset-1 mt-3 mb-3">{{ post.body }}</p>
+</div>
+<div id="favourite-section" class="col-10 offset-1">
+    <strong>Favourite: </strong>
+    {% if is_favourite %}
+    <a href="{% url 'post:favourite_post' post.pk %}">
+        <i class="far fa-heart"></i>
+    </a>
+    {% else %}
+    <a href="{% url 'post:favourite_post' post.pk %}">
+        <i class="far fa-heart"></i>
+    </a>
+    {% endif %}
+</div>
+<div id="like-section" class="col-10 offset-1">
+    {% include 'blog/like.html' %}
+</div>
+
+{% if not post.restrict_comments %}
+<div style="font-size: 12px;" class="main-comment-section col-10 offset-1">
+{% include 'blog/comments.html' %}
+</div>
+{% endif %}
+{% endblock content %}
+

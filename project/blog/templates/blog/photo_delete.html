@@ -1,0 +1,6 @@
+ {% if user.is_authenticated %}
+    <form action="{% url 'post:photo_delete' p.pk %}" method="post">
+        {% csrf_token %}
+        <button type="submit" id="delete-photo" class="btn btn-danger" name="id" value="{{ p.id }}">Delete {{ p.id }}</button>
+    </form>
+    {% endif %}

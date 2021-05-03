@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block title %} {{ block.super }} {% endblock title %}
+
+{% block content %}
+<div class="container-fluid">
+    <h3>Create Post</h3>
+    <hr>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% for p in photo.all %}
+            <div id="like-section" class="mb-3">
+                {{ p.image.url }} <a href="{% url 'post:photo_delete' p.pk %}" class="btn btn-danger">Delete</a>
+
+            </div>
+        {% empty %}
+            <h4>no media Files</h4>
+        {% endfor%}
+        {{ image_form.as_p }}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        {% endbuttons %}
+    </form>
+</div>
+{% endblock content %}

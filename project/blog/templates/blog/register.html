@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block title %} Sign Up {% endblock title %}
+
+{% block content %}
+<div class="container-fluid col-md-6 offset-md-3">
+    <h3><em>Register with Teslohg TV</em></h3>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="submit" class="btn btn-primary col-md-8 offset-md-4" style="width: 200px;" value="Register">
+    </form>
+</div>
+{% endblock content %}

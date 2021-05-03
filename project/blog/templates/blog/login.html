@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block title %} Login {% endblock title %}
+
+{% block content %}
+<div class="container-fluid col-md-6 offset-md-3">
+    <h3>Login</h3>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <p align="center">
+            <input type="submit" class="btn btn-primary btn-lg" style="width: 200px;" value="Login">
+        </p>
+
+    </form>
+    <p align="center">--OR--</p>
+    <p align="center">
+        <a href="{% url 'social:begin' 'github' %}">
+            <button type="button" class="btn btn-secondary btn-lg"><i class="fab fa-github"></i></button>
+        </a>
+        <a href="{% url 'social:begin' 'google-oauth2' %}">
+            <button type="button" class="btn btn-danger btn-lg" style="background-color:#dd4b39; border-color:#dd4b39; "><i class="fab fa-google-plus-g"></i></button>
+        </a>
+        <a href="{% url 'social:begin' 'facebook' %}">
+            <button type="button" class="btn btn-primary btn-lg" style="background-color:#3b5998; border-color:#3b5998; "><i class="fab fa-facebook-f"></i></button>
+        </a>
+    </p>
+    <p align="center"><a href="{% url 'password_reset' %}">Forgot Password?</a> | <a href="{% url 'post:register' %}">Sign Up?</a></p>
+</div>
+{% endblock content %}

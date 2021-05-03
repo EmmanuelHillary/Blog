@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %} {{ block.super }} {% endblock title %}
+
+{% block content %}
+{% for post in favourite_posts %}
+    <div class="posts col-md-6">
+        <div class="card text-center">
+          <div class="card-header">
+            <span style="float: left;">Posted by: {{ post.author }}</span> <small style="float: right;">{{ post.time }}</small>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.body }}</p>
+            <a href="{{ post.get_absolute_url }}" class="btn btn-primary">View</a>
+          </div>
+        </div>
+        <br>
+    </div>
+{% empty%}
+<div class="container-fluid">
+     <h5>
+        No Favourite Posts Found
+    </h5>
+</div>
+{% endfor %}
+
+{% endblock content %}

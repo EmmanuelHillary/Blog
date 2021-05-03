@@ -1,0 +1,44 @@
+<div class="mb-2">
+    <form method="post" class="comment-form" action=".">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if user.is_authenticated %}
+    <input type="submit" style="float: right;" value="Comment" class="btn btn-primary">
+    {% else %}
+    <input type="submit" style="float: right;" value="Comment" class="btn btn-primary" disabled>
+    {% endif %}
+</form>
+</div>
+    <h3>Comments</h3>
+    <hr>
+    <h5 class="col offset-11">{{ comments.count }} Comment{{ comments|pluralize }}</h5>
+    <hr>
+    {% for comment in comments %}
+        <blockquote class="blockquote">
+            <p style="font-size: 15px;" >{{ comment.content }} <span style="font-size: 11px; color: gray;"><em>{{ comment.time }}</em></span></p>
+            <footer class="blockquote-footer" style="font-size: 15px;">by <cite style="font-size: 15px;">{{ comment.user|capfirst }}</cite>
+            <button class="reply-btn btn btn-outline-dark btn-small btn-sm ml-2" >Reply</button> <p style="font-size: 11px;">replies: {{ comment.replies.count }}</p>
+            </footer>
+        </blockquote>
+
+        <div class="col-11 ml-4 replied-comments mt-2" style="display: none;">
+            {% for reply in comment.replies.all %}
+                <blockquote class="blockquote">
+                    <p style="font-size: 15px;">{{ reply.content }} <small style="font-size: 11px;"><cite>{{ reply.time }}</cite></small></p>
+                    <footer style="font-size: 15px;" class="blockquote-footer">by <cite style="font-size: 15px;" title="Source Title">{{ reply.user|capfirst }}</cite></footer>
+                </blockquote>
+            {% endfor %}
+            <div class="form-group row">
+                <form method="post" class="reply-form" action=".">
+                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    {% if user.is_authenticated %}
+                    <input type="submit" value="Comment" class="btn btn-primary">
+                    {% else %}
+                    <input type="submit" value="Comment" class="btn btn-primary" disabled>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    {% endfor %}
